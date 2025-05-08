@@ -62,6 +62,43 @@ onMounted(() => {
 </script>
 
 <template>
+  <div id="app">
+    <div class="container">
+      <div class="card">
+        <h2>🎱 Agenda Latihan Bilyard</h2>
+
+        <label class="toggle-show">
+          <input type="checkbox" v-model="showCompleted" />
+          Tampilkan yang sudah selesai
+        </label>
+
+        <ul class="task-list">
+          <li v-for="(task, index) in filteredTasks" :key="index">
+            <div class="task-content">
+              <input type="checkbox" v-model="task.done" />
+              <span :class="{ done: task.done }">{{ index + 1 }}. {{ task.name }}</span>
+            </div>
+            <div class="action-buttons">
+              <button class="edit-btn" @click="editTask(index)">✏</button>
+              <button class="delete-btn" @click="deleteTask(index)">🗑</button>
+            </div>
+          </li>
+        </ul>
+
+        <div class="input-group">
+          <input
+            ref="inputField"
+            v-model="newTask"
+            type="text"
+            placeholder="Tambahkan agenda bilyard"
+          />
+          <button v-if="isEditing" @click="updateTask">Update</button>
+          <button v-else @click="addTask">Tambah</button>
+          <button v-if="isEditing" class="cancel-btn" @click="cancelEdit">Batal</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style>
